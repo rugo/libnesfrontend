@@ -12,16 +12,18 @@ To use this lib on Linux you need to get liballegro5 and the libretro core Quick
 Here is how to do it on Debian:
 
 ```bash
+git clone https://github.com/rugo/libnesfrontend
 cd libnesfrontend
 apt install liballegro5.0 # install allegro
 # get QuickNES
 git clone https://github.com/libretro/QuickNES_Core.git quicknes
-# Compile it
+# Compile QuickNES
 cd quicknes 
 make -j
 # Rename it
 mv quicknes_libretro.so libretrones.so
 cd .. # go to libnesfrontend folder
+# Build libnesfrontend
 mkdir build && cd build
 cmake .. && make
 ./main_test # start the test program
