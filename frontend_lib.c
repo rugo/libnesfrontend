@@ -136,7 +136,9 @@ bool nes_load_game(const char* path, const char* savegame_path) {
     }
     return true;
 fail:
-    fclose(f);
+    if (f) {
+        fclose(f);
+    }
     return false;
 }
 
@@ -185,22 +187,30 @@ unsigned char nes_get_ram_byte(unsigned addr) {
 bool nes_serialize(char* path) {
     size_t s = retro_serialize_size();
     char* buf = (char*) malloc(s);
+    bool succ = false;
 
-    if (!retro_serialize(buf, s)) {
+    if (!buf) {
         return false;
     }
 
     FILE *f = fopen(path, "wb");
 
-    if (!f) {
-        return false;
+    if (!retro_serialize(buf, s) || !f) {
+        goto fail;
     }
 
-    if (!fwrite(savegame_buf, s, 1, f)) {
-        return false;
+    if (!fwrite(buf, s, 1, f)) {
+        goto fail;
+    } else {
+        succ = true;
     }
-    fclose(f);
-    return true;
+
+fail:
+    if (f) {
+        fclose(f);
+    }
+    free(buf);
+    return succ;
 }
 void nes_run() {
     retro_run();
