@@ -13,7 +13,10 @@ int main(int argc, char** argv) {
     int i = 0;
     nes_init();
     nes_init_ui(true);
-    bool k = nes_load_game("/home/rg/mario_bros.nes", "/home/rg/mario_bros.nes-savegame-right");
+    if(!nes_load_game("/home/rg/fun/pyneat/gaming/res/mario_bros.nes", "/home/rg/fun/pyneat/gaming/res/mario_bros.nes-savegame")){
+        printf("Could not load game.\n");
+        return 1;
+    }
     for (;;){
         nes_run();
         if (!(++i % 1000)){
